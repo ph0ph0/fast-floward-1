@@ -1,4 +1,20 @@
-import Artist from 0x01
+pub struct Canvas {
+    pub let width: UInt8
+    pub let height: UInt8
+    pub let pixels: String
+
+    init(width: UInt8, height: UInt8, pixels: String) {
+        self.width = width
+        self.height = height
+        // The following pixels
+        // 123
+        // 456
+        // 789
+        // should be serialised as 
+        // 12345679
+        self.pixels = pixels
+    }
+}
 
 pub fun serialzeStringArray(_ lines: [String]): String {
     var buffer = ""
@@ -7,6 +23,14 @@ pub fun serialzeStringArray(_ lines: [String]): String {
         buffer = buffer.concat(line)
     }
     return buffer
+}
+
+pub resource Picture {
+    pub let canvas: Canvas 
+
+    init (canvas: Canvas) {
+        self.canvas = canvas
+    }
 }
 
 pub fun convertBackToPixelArray(_ pixelString: String, width: Int, height: Int): [String] {
@@ -67,7 +91,7 @@ pub fun addFrameSides(to pixelArray: [String], width: Int, height: Int): [String
     return pixelArray
 }
 
-pub fun frameCanvas(_ canvas: Artist.Canvas): Artist.Canvas {
+pub fun frameCanvas(_ canvas: Canvas): Canvas {
     let pixels = canvas.pixels
     let width = Int(canvas.width)
     let height = Int(canvas.height)
@@ -76,39 +100,41 @@ pub fun frameCanvas(_ canvas: Artist.Canvas): Artist.Canvas {
 
     pixelArray= addFrameEnds(to: pixelArray, width: width, height: height)
     pixelArray = addFrameSides(to: pixelArray, width: width, height: height)
-    let framedCanvas = Artist.Canvas(width: UInt8(width + 2), height: UInt8(height + 2), pixels: serialzeStringArray(pixelArray))
+    let framedCanvas = Canvas(width: UInt8(width + 2), height: UInt8(height + 2), pixels: serialzeStringArray(pixelArray))
     return framedCanvas
 }
 
-pub fun display(canvas: Artist.Canvas) {
+pub fun display(canvas: Canvas) {
     let framedCanvas = frameCanvas(canvas)
     log(framedCanvas)
 }
 
-pub fun printCollectionContents(_ collectionRef: &Artist.Collection) {
-  for key in collectionRef.pictures {
-    let picture = collectionRef[key] 
-    let canvas = picture.canvas
-    display(canvas: canvas)
-  }
-}
-
-pub fun showArtistsCollection(_ address: Address) {
-  log("Showing collection for ".concat(address.toString()))
-  if let collectionRef = getAccount(address).getCapability<&Artist.Collection>(/public/ArtistCollection).borrow() {
-    printCollectionContents(collectionRef)
-  } else {
-    log("No collection yet")
-  }
-
+pub resource Printer {
+    pub fun print(canvas: Canvas): @Picture? {
+        let letterX <- create Picture(canvas: canvas)
+        log(letterX.canvas)
+        return <- letterX
+    }
 }
 
 pub fun main() {
+    let pixelsX = [
+        "*   *",
+        " * * ",
+        "  *  ",
+        " * * ",
+        "*   *"
+    ]
+    let pixels = serialzeStringArray(pixelsX)
+    let canvasX = Canvas(width: 5, height: 5, pixels: pixels)
     
-    let addresses: [Address] = [0x01, 0x02, 0x03, 0x04, 0x05]
+    // W1Q1
+    display(canvas: canvasX)
 
-    for address in addresses {
-      showArtistsCollection(address)
-    } 
+    // W1Q2
+    let printX <- create Printer()
+    let letterX <- printX.print(canvas: canvasX)
+    destroy letterX
+    destroy printX
 
 }

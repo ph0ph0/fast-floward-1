@@ -1,14 +1,13 @@
 import Hello from "./contract.cdc"
 
 transaction {
+    let name: String
 
-  let name: String
+    prepare(account: AuthAccount) {
+        self.name = account.address.toString()
+    }
 
-  prepare(account: AuthAccount) {
-    self.name = account.address.toString()
-  }
-
-  execute {
-    Hello.sayHi(to: self.name)
-  }
+    execute {
+        Hello.sayHi(to: self.name)
+    }
 }
