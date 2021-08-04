@@ -103,7 +103,7 @@ function Provider(props) {
               }
             }
           `,
-          fcl.args([]),
+          // fcl.args([]),
           fcl.payer(fcl.authz),
           fcl.proposer(fcl.authz),
           fcl.authorizations([fcl.authz]),
