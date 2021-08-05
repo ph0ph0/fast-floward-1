@@ -62,7 +62,7 @@ function Trade(props) {
     console.log(listingIndex);
     dispatch({type: 'startProcessing', payload: listingIndex});
     // TODO: Once your buy() method is implemented in Flow.jsx, uncomment this line.
-    // await flow.buy(listingIndex);
+    await flow.buy(listingIndex);
     await flow.fetchCollection()
     const listings = await flow.fetchListings();
     await flow.fetchBalance();
@@ -73,7 +73,7 @@ function Trade(props) {
     console.log(listingIndex);
     dispatch({type: 'startProcessing', payload: listingIndex});
     // TODO: Once your withdrawListing() method is implemented in Flow.jsx, uncomment this line.
-    // await flow.withdrawListing(listingIndex);
+    await flow.withdrawListing(listingIndex);
     await flow.fetchCollection();
     await flow.fetchBalance();
     const listings = await flow.fetchListings();
