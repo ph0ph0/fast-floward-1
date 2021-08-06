@@ -134,6 +134,66 @@ buy // call LocalArtistMarket.buy()
 
 Also, take a look at `/src/pages/Trade/Trade.jsx` to see if you need to uncomment anything...
 
+Also note that you will need to complete the steps in Day4 in order to deploy and get the app up and running:
+
+1: make sure to deploy LocalArtistMarket cadence contract under  /src/cadence/LocalArtistMarket. In order to do this, follow the instruction in day 4 to create flow.json file under cadence directory and update the file with your private key info, smaple flow.json content is listed below
+```
+{
+    "emulators": {
+        "default": {
+            "port": 3569,
+            "serviceAccount": "emulator-account"
+        }
+    },
+
+    "contracts": {
+       "LocalArtistMarket": "./LocalArtistMarket/contract.cdc"
+
+},
+    "networks": {
+        "emulator": "127.0.0.1:3569",
+        "mainnet": "access.mainnet.nodes.onflow.org:9000",
+        "testnet": "access.devnet.nodes.onflow.org:9000"
+    },
+    "accounts": {
+        "emulator-account": {
+            "address": "f8d6e0586b0a20c7",
+            "key": "dc723cd33daf191d9dd14fcd65cc5d9a4e2eda193f588b7f71d09746b45b6b6c"
+        },
+    "testnet-local-artist": {
+      "address": "0x19768276dd8a25b2", 
+      "key": {
+        "type": "hex",
+        "index": 0,
+        "signatureAlgorithm": "ECDSA_P256",
+        "hashAlgorithm": "SHA3_256",
+        "privateKey": "replace-with-your-test-account-privatekey"
+      }
+    }
+
+    },
+    "deployments": {
+"testnet": {
+      "testnet-local-artist": [
+        "LocalArtistMarket"
+      ]
+    }
+
+}
+}
+```
+
+2: You wil need the .env file placed under the root of Artist folder with content like below:
+
+PUBLIC_URL=/public/
+REACT_APP_ARTIST_CONTRACT_NAME=LocalArtist
+REACT_APP_ARTIST_CONTRACT_HOST_ACCOUNT=0x19768276dd8a25b2
+Make sure to change the address 0x19768276dd8a25b2 with your Flow testnet address. 
+
+3: change contact.cdc file under LocalArtistMarket with the following import code to import from your test account address, for example
+
+import LocalArtist from 0x19768276dd8a25b2
+
 And with that, you've got yourself an online NFT marketplace!
 
 It's been a absolute privilege to guide you on your journey to becoming a decentralized app developer. Week 2 and 3 are coming up, and Jacob along with Nik and the rest of the team at Decentology have incredible content waiting for you. So strap in for the rest of the ride, the fun has just begun!
