@@ -1,6 +1,8 @@
-import LocalArtist from "../LocalArtist/contract.cdc"
+import LocalArtist from 0xd91c618ba21469f9
 import FungibleToken from 0x9a0766d93b6608b7
 import FlowToken from 0x7e60df042a9c0868
+import LocalArtist from 0xd91c618ba21469f9
+
 
 pub contract LocalArtistMarket {
   
